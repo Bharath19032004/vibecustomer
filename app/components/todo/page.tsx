@@ -63,7 +63,7 @@ const fetcher = async (url: string) => {
 export default function Dashboard() {
   const { data: session, status } = useSession()
   const [showReviewForm, setShowReviewForm] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(60)
+  const [timeLeft, setTimeLeft] = useState(120)
   const [analytics, setAnalytics] = useState<Analytics | null>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [selectedStars, setSelectedStars] = useState(0)
@@ -147,7 +147,7 @@ export default function Dashboard() {
 
   const handleAddReview = () => {
     setShowReviewForm(true)
-    setTimeLeft(60)
+    setTimeLeft(120)
     setSelectedStars(0)
   }
 
