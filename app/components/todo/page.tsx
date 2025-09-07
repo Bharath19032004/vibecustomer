@@ -63,7 +63,7 @@ const fetcher = async (url: string) => {
 export default function Dashboard() {
   const { data: session, status } = useSession()
   const [showReviewForm, setShowReviewForm] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(120)
+  const [timeLeft, setTimeLeft] = useState(0)
   const [analytics, setAnalytics] = useState<Analytics | null>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [selectedStars, setSelectedStars] = useState(0)
@@ -83,8 +83,8 @@ export default function Dashboard() {
   useEffect(() => {
     if (reviews.length > 0) {
       const totalReviews = reviews.length
-      const averageRating = reviews.reduce((sum, review) => sum + (review.stars || 0), 0) / totalReviews
-      const recommendationRate = (reviews.filter(review => review.wouldRecommend).length / totalReviews) * 100
+      const averageRating = reviews.reduce((sum: number, review: Review) => sum + (review.stars || 0), 0) / totalReviews
+      const recommendationRate = (reviews.filter((review: Review) => review.wouldRecommend).length / totalReviews) * 100
       
       const productTypeDistribution: Record<string, number> = {}
       const productQualityDistribution: Record<string, number> = {}
@@ -92,7 +92,7 @@ export default function Dashboard() {
       const starDistribution: Record<number, number> = {}
       const recentActivity: Record<string, number> = {}
 
-      reviews.forEach(review => {
+      reviews.forEach((review: Review) => {
         productTypeDistribution[review.productType] = (productTypeDistribution[review.productType] || 0) + 1
         productQualityDistribution[review.productQuality] = (productQualityDistribution[review.productQuality] || 0) + 1
         serviceQualityDistribution[review.serviceQuality] = (serviceQualityDistribution[review.serviceQuality] || 0) + 1
@@ -337,7 +337,7 @@ export default function Dashboard() {
                       outerRadius={80}
                       fill="#8884d8"
                       dataKey="value"
-                      label={({ name, percent }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
+                      label={({ name, percent }: { name: string; percent?: number }) => `${name} (${((percent ?? 0) * 100).toFixed(0)}%)`}
                     >
                       {analytics.productTypeDistribution.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -491,7 +491,7 @@ export default function Dashboard() {
               </div>
             ) : (
               <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
-                {reviews.map((review) => (
+                {reviews.map((review: Review) => (
                   <div key={review.id} className="bg-gray-50 p-6 rounded-lg hover:bg-indigo-50 transition-colors duration-200 group border border-gray-200">
                     <div className="flex justify-between items-start mb-4">
                       <div>
